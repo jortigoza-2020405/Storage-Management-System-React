@@ -1,46 +1,49 @@
 "use client";
 
-import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../firebase";
-import "../styles/Auth.css";
+import { useState } from "react"
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
+import { auth, googleProvider } from "../firebase"
+import { useNavigate } from "react-router-dom"
+import "../styles/Auth.css"
 
 const Login = () => {
-  const [email, setEmail] = useState(""); 
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
+	const [error, setError] = useState("")
+	const [loading, setLoading] = useState(false)
 
-  const handleEmailLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+	const navigate = useNavigate()
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login successful");
-      window.location.href = "/dashboard";
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+	const handleEmailLogin = async (e) => {
+		e.preventDefault()
+		setLoading(true)
+		setError("")
 
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError("");
+		try {
+			await signInWithEmailAndPassword(auth, email, password)
+			console.log("Login successful")
+			navigate('/home') // 
+		} catch (error) {
+			setError(error.message)
+		} finally {
+			setLoading(false)
+		}
+	}
 
-    try {
-      await signInWithPopup(auth, googleProvider);
-      console.log("Google login successful");
-      window.location.href = "/dashboard";
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+	const handleGoogleLogin = async () => {
+		setLoading(true)
+		setError("")
+
+		try {
+			await signInWithPopup(auth, googleProvider)
+			console.log("Google login successful")
+			navigate('/home') // 
+		} catch (error) {
+			setError(error.message)
+		} finally {
+			setLoading(false)
+		}
+	}
 
   return (
     <div className="auth-container">
