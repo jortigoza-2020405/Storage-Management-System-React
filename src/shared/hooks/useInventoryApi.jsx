@@ -23,13 +23,27 @@ export const useInventoryApi = () => {
 
 	// Obtener todos los productos
 	const getProducts = async () => {
+	try {
 		const response = await getAllProductsRequest()
+
 		if (response.error) {
+			console.error('Error de API:', response.err?.response)
 			toast.error(response?.err?.response?.data?.message || 'Error al obtener productos')
 			return
 		}
-		setProducts(response.data.products || response.data)
+
+		console.log('Productos recibidos:', response.data)
+
+		// Si la respuesta es { products: [...] }, toma eso
+		// Si es solo un array, úsalo directamente
+		const productos = response.data.products || response.data.product || response.data
+		setProducts(productos)
+	} catch (error) {
+		console.error('Error inesperado:', error)
+		toast.error('Error inesperado al obtener productos')
 	}
+}
+
 
 	// Agregar producto
 	const addProduct = async (product) => {

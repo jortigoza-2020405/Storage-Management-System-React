@@ -13,26 +13,26 @@ const getToken = () => {
 }
 
 apiClient.interceptors.request.use((config) => {
-	const token = getToken()
+	const token = localStorage.getItem('token')
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`
+		console.log('Token enviado:', token)
 	}
 	return config
 })
 
+
 //  EndPoints de Products
 
 // get all
-export const getAllProductsRequest = async() => {
+export const getAllProductsRequest = async () => {
 	try {
-		return await apiClient.get('/products/products')
+		return await apiClient.get('/products/products') 
 	} catch (err) {
-		return {
-			error: true,
-			err
-		}
+		return { error: true, err }
 	}
 }
+
 
 // Add 
 
@@ -73,16 +73,16 @@ export const getProductByCategoryRequest = async(name) =>{
 }
 // get by date and category
 
-export const getByCategoryAndDateRequest = async(filterData)=>{
+export const getByCategoryAndDateRequest = async (params) => {
 	try {
-		return await apiClient.get('/products/byCategoryAndDate', {data: filterData})
+		return await apiClient.get('/products/byCategoryAndDate', {
+			params
+		})
 	} catch (err) {
-		return{
-			error: true,
-			err
-		}
+		return { error: true, err }
 	}
 }
+
 // Update product 
 export const updateProductRequest = async (id, productData)=>{
 	try {
@@ -158,5 +158,23 @@ export const registerUserRequest = async (newUser) => {
 		return { error: true, err }
 	}
 }
+
+export const registerProductMovementRequest = async (movementData) => {
+	try {
+		return await apiClient.post('/movements/registerMovement', movementData) // para empleado
+		// o '/movements/registerMovementAdmin' 
+	} catch (err) {
+		return { error: true, err }
+	}
+}
+
+export const getProductMovementHistoryRequest = async (productId) => {
+	try {
+		return await apiClient.get(`/movements/history/${productId}`)
+	} catch (err) {
+		return { error: true, err }
+	}
+}
+
 
 export default apiClient

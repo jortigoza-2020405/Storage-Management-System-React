@@ -56,7 +56,7 @@ const Register = () => {
 				throw new Error(response.err.response?.data?.message || "Error al registrar")
 
 			console.log("Registro exitoso")
-			nav("/dashboard")
+			nav("/home")
 		} catch (error) {
 			setError(error.message)
 		} finally {
@@ -98,7 +98,7 @@ const Register = () => {
 				throw new Error(response.err.response?.data?.message || "Error al registrar con Google")
 
 			console.log("Registro con Google exitoso")
-			nav("/dashboard")
+			nav("/home")
 		} catch (err) {
 			console.error("Error en registro con Google:", err)
 			if (err.code === "auth/popup-closed-by-user") {
